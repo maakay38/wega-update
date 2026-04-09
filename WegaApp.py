@@ -8,7 +8,7 @@ from tkinter import messagebox
 CURRENT_VERSION = "1.0.0"
 
 VERSION_URL = "https://raw.githubusercontent.com/maakay38/wega-update-new/main/version.txt"
-EXE_URL = "https://github.com/maakay38/wega-update-new/raw/main/WegaApp.exe"
+EXE_URL = "https://github.com/maakay38/wega-update-new/releases/latest/download/WegaApp.exe"
 
 
 def check_for_update():

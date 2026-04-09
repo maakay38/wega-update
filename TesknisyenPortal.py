@@ -68,10 +68,10 @@ def _get_desktop_dir() -> str:
 
 
 def ensure_desktop_shortcut() -> None:
-    """Masaüstünde Wega.lnk yoksa oluşturur (launcher exe'sine işaret eder)."""
+    """Masaüstünde TeknisyenPortal.lnk yoksa oluşturur (launcher exe'sine işaret eder)."""
     try:
         desktop = _get_desktop_dir()
-        shortcut_path = os.path.join(desktop, "Wega.lnk")
+        shortcut_path = os.path.join(desktop, "TeknisyenPortal.lnk")
         if os.path.exists(shortcut_path):
             return
 
@@ -238,7 +238,7 @@ def main() -> None:
         sys.exit(0)
 
     show_message(
-        "Wega Launcher",
+        "TeknisyenPortal",
         "WegaApp.exe bulunamadı ve indirilemedi.\n"
         "İnternet bağlantınızı kontrol edip tekrar deneyin.",
     )

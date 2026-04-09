@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['WegaLauncher.py'],
+    ['TesknisyenPortal.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='WegaLauncher',
+    name='TesknisyenPortal',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
