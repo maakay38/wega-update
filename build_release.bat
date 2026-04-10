@@ -1,71 +1,88 @@
 @echo off
-title WEGA BUILD SYSTEM
+title WEGA FINAL SYSTEM
 color 0A
 
-echo ============================
-echo VERSION GIRISI
-echo ============================
+echo =========================
+echo VERSION ARTIR
+echo =========================
 
-python version_prompt.py
+for /f %%i in (version.txt) do set VERSION=%%i
 
-echo ============================
-echo BUILD BASLIYOR...
-echo ============================
-
-rmdir /s /q build
-rmdir /s /q dist
-del *.spec
-
-echo TeknisyenPortal build...
-pyinstaller --onefile --noconsole TeknisyenPortal.py
-if errorlevel 1 pause
-
-echo WegaApp build...
-pyinstaller --onefile --noconsole WegaApp.py
-if errorlevel 1 pause
-
-echo ============================
-echo DOSYALAR KONTROL
-echo ============================
-
-if not exist dist\TeknisyenPortal.exe (
-    echo HATA: TeknisyenPortal.exe olusmadi!
-    pause
-    exit
+for /f "tokens=1,2,3 delims=." %%a in ("%VERSION%") do (
+ set MAJOR=%%a
+ set MINOR=%%b
+ set PATCH=%%c
 )
 
-if not exist dist\WegaApp.exe (
-    echo HATA: WegaApp.exe olusmadi!
-    pause
-    exit
-)
+set /a PATCH+=1
+set NEW_VERSION=%MAJOR%.%MINOR%.%PATCH%
+echo %NEW_VERSION% > version.txt
 
-echo ============================
-echo ZIP OLUSTURULUYOR
-echo ============================
+set TAG=v%NEW_VERSION%
 
-rmdir /s /q release
+echo =========================
+echo BUILD TEMIZLE
+echo =========================
+
+rmdir /s /q build 2>nul
+rmdir /s /q dist 2>nul
+rmdir /s /q release 2>nul
+
 mkdir release
 
-copy dist\TeknisyenPortal.exe release\
-copy dist\WegaApp.exe release\
-copy app_version.txt release\
+echo =========================
+echo EXE BUILD
+echo =========================
+
+pyinstaller --onefile --noconsole --icon=wega.ico TeknisyenPortal.py
+pyinstaller --onefile --noconsole --icon=wega.ico WegaApp.py
+
+echo =========================
+echo DOSYALARI HAZIRLA
+echo =========================
+
+copy dist\WegaApp.exe release\WegaApp.exe
+copy dist\TeknisyenPortal.exe release\TeknisyenPortal.exe
+
+echo =========================
+echo ZIP OLUSTUR
+echo =========================
 
 powershell Compress-Archive -Path release\* -DestinationPath wega_release.zip -Force
 
-echo ============================
-echo GITHUB RELEASE
-echo ============================
+echo =========================
+echo GIT PUSH
+echo =========================
 
-for /f "tokens=2 delims=:," %%a in ('findstr version manifest.json') do set VERSION=%%a
-set VERSION=%VERSION:"=%
+git add .
+git commit -m "release %NEW_VERSION%"
+git push origin main
 
-set TAG=v%VERSION%
+echo =========================
+echo RELEASE SIL + YENI YUKLE
+echo =========================
 
-gh release create %TAG% dist\WegaApp.exe --title "Wega %VERSION%" --notes "Auto release"
+gh release delete %TAG% -y 2>nul
 
-echo ============================
+gh release create %TAG% wega_release.zip release\WegaApp.exe ^
+--title "Wega %NEW_VERSION%" ^
+--notes "Version %NEW_VERSION%"
+
+echo =========================
+echo ESKI SURUMLERI SIL (SON 3)
+echo =========================
+
+powershell -Command ^
+"$rels = gh release list --limit 100 | ForEach-Object { ($_ -split '\s+')[0] }; ^
+$keep = $rels | Select-Object -First 3; ^
+foreach ($r in $rels) { ^
+ if ($keep -notcontains $r) { ^
+   gh release delete $r -y ^
+ } ^
+}"
+
+echo =========================
 echo TAMAMLANDI
-echo ============================
+echo =========================
 
 pause

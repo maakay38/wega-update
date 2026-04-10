@@ -1,26 +1,10 @@
-WEGA AUTO BUILD + RELEASE v2
-
-YENILIKLER:
-- GUI ile version girme
-- TeknisyenPortal build kontrol
-- Hata yakalama
-
 KULLANIM:
-1. GitHub CLI kur:
-   winget install GitHub.cli
-   gh auth login
 
-2. Python:
-   pip install pyinstaller
+1- auto_update.py projeye at
+2- TeknisyenPortal.py içine:
+   from auto_update import update_app
 
-3. Aynı klasöre koy:
-   - TeknisyenPortal.py
-   - WegaApp.py
+3- Butona:
+   command=update_app
 
-4. build_release.bat çalıştır
-
-SİSTEM:
-- Version popup gelir
-- EXE build edilir
-- ZIP oluşturulur
-- GitHub release atılır
+4- build_release.bat ile build al
