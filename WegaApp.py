@@ -5,10 +5,10 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox
 
-CURRENT_VERSION = "1.0.0"
+CURRENT_VERSION = "1.0.1"
 
-VERSION_URL = "https://raw.githubusercontent.com/maakay38/wega-update-new/main/version.txt"
-EXE_URL = "https://github.com/maakay38/wega-update-new/releases/latest/download/WegaApp.exe"
+VERSION_URL = "https://raw.githubusercontent.com/maakay38/wega-update/main/version.txt"
+EXE_URL = "https://github.com/maakay38/wega-update/releases/latest/download/WegaApp.exe"
 
 
 def check_for_update():
@@ -87,7 +87,7 @@ import threading
 # =========================
 APP_VERSION = None  # app_version.txt varsa oradan okunur
 MANIFEST_URL = "https://raw.githubusercontent.com/maakay38/wega-update/main/manifest.json"
-EXE_FALLBACK_URL = "https://raw.githubusercontent.com/maakay38/wega-update/main/fallback/WegaApp.exe"
+EXE_FALLBACK_URL = "https://github.com/maakay38/wega-update/releases/latest/download/WegaApp.exe"
 
 import json
 import urllib.request
